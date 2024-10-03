@@ -1,0 +1,28 @@
+1. Logging in as SYSDBA
+To manage databases, you need to log in as SYSDBA. You do this from the command prompt by typing sqlplus / as sysdba.
+
+2. Checking Existing PDBs
+After logging in, check which Pluggable Databases (PDBs) exist by typing: SELECT name, open_mode FROM v$pdbs;. This will show you the available PDBs and whether they are open or closed.
+
+3. Opening a PDB
+If your PDB is closed or in read-only mode, you need to open it for use. Do this by typing ALTER PLUGGABLE DATABASE pdb_name OPEN;, where pdb_name is the name of your PDB.
+
+To automatically open the PDB in the future, type ALTER PLUGGABLE DATABASE pdb_name SAVE STATE;.
+
+4. Creating a User and Password
+If you haven't created a user, use the command CREATE USER myuser IDENTIFIED BY mypassword;. After that, grant access rights with GRANT CONNECT, RESOURCE TO myuser;.
+
+5. Connecting to the PDB as a User
+After creating the user, you can log in as the user. First, exit the SYSDBA session by typing exit. Then, connect to the PDB using your username and password: sqlplus username/password@pdb_name.
+
+For example: sqlplus myuser/mypassword@ORCLPDB1.
+
+6. Verifying the Connection
+To make sure you're connected to the right PDB, type SELECT name FROM v$database; after logging in. This will show you the name of the database you are working in.
+
+7. Common Issues and Solutions
+If you see an error about not being able to connect (like "TNS could not resolve"), check the connection details (PDB name, listener, and port).
+If the database isn’t open, use the command ALTER PLUGGABLE DATABASE pdb_name OPEN; to open it.
+8. Closing a PDB
+When done, you can close the PDB by typing ALTER PLUGGABLE DATABASE pdb_name CLOSE;.
+
